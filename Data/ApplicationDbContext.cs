@@ -15,5 +15,7 @@ namespace SIM_Lubricentro.Data
         }
         public DbSet<SIM_Lubricentro.Models.Cliente> Cliente { get; set; }
         public DbSet<SIM_Lubricentro.Models.Carro> Carro { get; set; }
+        public DbSet<SIM_Lubricentro.Models.Personal> Personal { get; set; }
+        public DbSet<SIM_Lubricentro.Models.Reparacion> Reparacion { get; set; }
     }
 }
