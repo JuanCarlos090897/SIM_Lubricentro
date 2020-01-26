@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIM_Lubricentro.Data;
 
 namespace SIM_Lubricentro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200122192524_Migracion2")]
+    partial class Migracion2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,7 +192,7 @@ namespace SIM_Lubricentro.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Cliente_ID");
+                    b.Property<int?>("Cliente_ID");
 
                     b.Property<string>("Color");
 
@@ -251,13 +253,13 @@ namespace SIM_Lubricentro.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Carro_ID");
+                    b.Property<int?>("Carro_ID");
 
                     b.Property<string>("Descripcion");
 
                     b.Property<DateTime>("Fecha");
 
-                    b.Property<int>("Personal_ID");
+                    b.Property<int?>("Personal_ID");
 
                     b.Property<bool>("Realizado");
 
@@ -321,21 +323,18 @@ namespace SIM_Lubricentro.Data.Migrations
                 {
                     b.HasOne("SIM_Lubricentro.Models.Cliente", "Cliente")
                         .WithMany("Carros")
-                        .HasForeignKey("Cliente_ID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Cliente_ID");
                 });
 
             modelBuilder.Entity("SIM_Lubricentro.Models.Reparacion", b =>
                 {
                     b.HasOne("SIM_Lubricentro.Models.Carro", "Carro")
                         .WithMany("Reparaciones")
-                        .HasForeignKey("Carro_ID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Carro_ID");
 
                     b.HasOne("SIM_Lubricentro.Models.Personal", "Personal")
                         .WithMany("Reparaciones")
-                        .HasForeignKey("Personal_ID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Personal_ID");
                 });
 #pragma warning restore 612, 618
         }

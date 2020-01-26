@@ -17,9 +17,11 @@ namespace SIM_Lubricentro.Models
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
 
+        public int Carro_ID { get; set; }
         [ForeignKey("Carro_ID")]
         public virtual Carro Carro { get; set; }
 
+        public int Personal_ID { get; set; }
         [ForeignKey("Personal_ID")]
         public virtual Personal Personal { get; set; }
     }

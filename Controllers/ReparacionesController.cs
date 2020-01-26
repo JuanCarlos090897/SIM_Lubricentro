@@ -22,7 +22,8 @@ namespace SIM_Lubricentro.Controllers
         // GET: Reparaciones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Reparacion.ToListAsync());
+            var applicationDbContext = _context.Reparacion.Include(r => r.Carro).Include(r => r.Personal);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Reparaciones/Details/5
@@ -34,6 +35,8 @@ namespace SIM_Lubricentro.Controllers
             }
 
             var reparacion = await _context.Reparacion
+                .Include(r => r.Carro)
+                .Include(r => r.Personal)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (reparacion == null)
             {
@@ -46,6 +49,8 @@ namespace SIM_Lubricentro.Controllers
         // GET: Reparaciones/Create
         public IActionResult Create()
         {
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID");
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID");
             return View();
         }
 
@@ -54,7 +59,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Titulo,Descripcion,Realizado,Fecha")] Reparacion reparacion)
+        public async Task<IActionResult> Create([Bind("ID,Titulo,Descripcion,Realizado,Fecha,Carro_ID,Personal_ID")] Reparacion reparacion)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +67,8 @@ namespace SIM_Lubricentro.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", reparacion.Carro_ID);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID", reparacion.Personal_ID);
             return View(reparacion);
         }
 
@@ -78,6 +85,8 @@ namespace SIM_Lubricentro.Controllers
             {
                 return NotFound();
             }
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", reparacion.Carro_ID);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID", reparacion.Personal_ID);
             return View(reparacion);
         }
 
@@ -86,7 +95,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Titulo,Descripcion,Realizado,Fecha")] Reparacion reparacion)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Titulo,Descripcion,Realizado,Fecha,Carro_ID,Personal_ID")] Reparacion reparacion)
         {
             if (id != reparacion.ID)
             {
@@ -113,6 +122,8 @@ namespace SIM_Lubricentro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", reparacion.Carro_ID);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID", reparacion.Personal_ID);
             return View(reparacion);
         }
 
@@ -125,6 +136,8 @@ namespace SIM_Lubricentro.Controllers
             }
 
             var reparacion = await _context.Reparacion
+                .Include(r => r.Carro)
+                .Include(r => r.Personal)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (reparacion == null)
             {

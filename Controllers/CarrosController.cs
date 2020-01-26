@@ -22,7 +22,8 @@ namespace SIM_Lubricentro.Controllers
         // GET: Carros
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Carro.ToListAsync());
+            var applicationDbContext = _context.Carro.Include(c => c.Cliente);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Carros/Details/5
@@ -34,6 +35,7 @@ namespace SIM_Lubricentro.Controllers
             }
 
             var carro = await _context.Carro
+                .Include(c => c.Cliente)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (carro == null)
             {
@@ -46,6 +48,7 @@ namespace SIM_Lubricentro.Controllers
         // GET: Carros/Create
         public IActionResult Create()
         {
+            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Placa,Modelo,Color")] Carro carro)
+        public async Task<IActionResult> Create([Bind("ID,Placa,Modelo,Color,Cliente_ID")] Carro carro)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace SIM_Lubricentro.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID", carro.Cliente_ID);
             return View(carro);
         }
 
@@ -78,6 +82,7 @@ namespace SIM_Lubricentro.Controllers
             {
                 return NotFound();
             }
+            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID", carro.Cliente_ID);
             return View(carro);
         }
 
@@ -86,7 +91,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Placa,Modelo,Color")] Carro carro)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Placa,Modelo,Color,Cliente_ID")] Carro carro)
         {
             if (id != carro.ID)
             {
@@ -113,6 +118,7 @@ namespace SIM_Lubricentro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID", carro.Cliente_ID);
             return View(carro);
         }
 
@@ -125,6 +131,7 @@ namespace SIM_Lubricentro.Controllers
             }
 
             var carro = await _context.Carro
+                .Include(c => c.Cliente)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (carro == null)
             {

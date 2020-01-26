@@ -13,6 +13,7 @@ namespace SIM_Lubricentro.Models
         public string Modelo { get; set; }
         public string Color { get; set; }
 
+        public int Cliente_ID { get; set; }
         [ForeignKey("Cliente_ID")]
         public virtual Cliente Cliente { get; set; }
 
