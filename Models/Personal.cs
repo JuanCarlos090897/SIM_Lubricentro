@@ -12,8 +12,9 @@ namespace SIM_Lubricentro.Models
         public string Telofono { get; set; }
         public string Correo { get; set; }
         public string Cedula { get; set; }
-        public string TipoPersonal { get; set; }
+        public string PuestoDeTrabajo { get; set; }
 
-        public virtual IEnumerable<Reparacion> Reparaciones { get; set; }
+        public virtual IEnumerable<Historial> Historiales { get; set; }
+        public virtual IEnumerable<RealizarReparacion> RealizarReparaciones { get; set; }
     }
 }

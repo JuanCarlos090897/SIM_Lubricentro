@@ -11,18 +11,8 @@ namespace SIM_Lubricentro.Models
     {
         public int ID { get; set; }
         public string Titulo { get; set; }
-        public string Descripcion { get; set; }
-        public bool Realizado { get; set; }
+        public string Reparaciones { get; set; }// aqui se le da la descripcion de la Reparacion ej: Cmabio dce llantas
 
-        [DataType(DataType.Date)]
-        public DateTime Fecha { get; set; }
-
-        public int Carro_ID { get; set; }
-        [ForeignKey("Carro_ID")]
-        public virtual Carro Carro { get; set; }
-
-        public int Personal_ID { get; set; }
-        [ForeignKey("Personal_ID")]
-        public virtual Personal Personal { get; set; }
+        
     }
 }

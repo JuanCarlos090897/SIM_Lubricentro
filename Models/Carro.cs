@@ -10,13 +10,17 @@ namespace SIM_Lubricentro.Models
     {
         public int ID { get; set; }
         public string Placa { get; set; }
-        public string Modelo { get; set; }
-        public string Color { get; set; }
+        public string Vehiculo { get; set; }
+        public string Estilo { get; set; }
+        public string Año { get; set; }
+        public string Kms { get; set; }
 
         public int Cliente_ID { get; set; }
         [ForeignKey("Cliente_ID")]
         public virtual Cliente Cliente { get; set; }
 
-        public virtual IEnumerable<Reparacion> Reparaciones { get; set; }
+        public virtual IEnumerable<PiezaAgregada> PiezasAgregadas { get; set; }
+        public virtual IEnumerable<Historial> Historiales { get; set; }
+        public virtual IEnumerable<RealizarReparacion> RealizarReparaciones { get; set; }
     }
 }
