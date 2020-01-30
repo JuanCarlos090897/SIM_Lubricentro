@@ -10,22 +10,22 @@ using SIM_Lubricentro.Models;
 
 namespace SIM_Lubricentro.Controllers
 {
-    public class ClientesController : Controller
+    public class ReparacionesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ClientesController(ApplicationDbContext context)
+        public ReparacionesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Clientes
+        // GET: Reparaciones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cliente.ToListAsync());
+            return View(await _context.Reparacion.ToListAsync());
         }
 
-        // GET: Clientes/Details/5
+        // GET: Reparaciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var reparacion = await _context.Reparacion
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (cliente == null)
+            if (reparacion == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(reparacion);
         }
 
-        // GET: Clientes/Create
+        // GET: Reparaciones/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Reparaciones/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nombre,Telofono,Correo,Cedula,Celular")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("ID,Titulo,DescripcionReparacion")] Reparacion reparacion)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
+                _context.Add(reparacion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            return View(reparacion);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: Reparaciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente.FindAsync(id);
-            if (cliente == null)
+            var reparacion = await _context.Reparacion.FindAsync(id);
+            if (reparacion == null)
             {
                 return NotFound();
             }
-            return View(cliente);
+            return View(reparacion);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: Reparaciones/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Telofono,Correo,Cedula,Celular")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Titulo,DescripcionReparacion")] Reparacion reparacion)
         {
-            if (id != cliente.ID)
+            if (id != reparacion.ID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace SIM_Lubricentro.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
+                    _context.Update(reparacion);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.ID))
+                    if (!ReparacionExists(reparacion.ID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace SIM_Lubricentro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            return View(reparacion);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Reparaciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var reparacion = await _context.Reparacion
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (cliente == null)
+            if (reparacion == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(reparacion);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Reparaciones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
-            _context.Cliente.Remove(cliente);
+            var reparacion = await _context.Reparacion.FindAsync(id);
+            _context.Reparacion.Remove(reparacion);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool ReparacionExists(int id)
         {
-            return _context.Cliente.Any(e => e.ID == id);
+            return _context.Reparacion.Any(e => e.ID == id);
         }
     }
 }

@@ -10,22 +10,22 @@ using SIM_Lubricentro.Models;
 
 namespace SIM_Lubricentro.Controllers
 {
-    public class ClientesController : Controller
+    public class PersonalsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ClientesController(ApplicationDbContext context)
+        public PersonalsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Clientes
+        // GET: Personals
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cliente.ToListAsync());
+            return View(await _context.Personal.ToListAsync());
         }
 
-        // GET: Clientes/Details/5
+        // GET: Personals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var personal = await _context.Personal
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (cliente == null)
+            if (personal == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(personal);
         }
 
-        // GET: Clientes/Create
+        // GET: Personals/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Personals/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nombre,Telofono,Correo,Cedula,Celular")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("ID,Nombre,Telofono,Correo,Cedula,Celular,PuestoDeTrabajo")] Personal personal)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
+                _context.Add(personal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            return View(personal);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: Personals/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente.FindAsync(id);
-            if (cliente == null)
+            var personal = await _context.Personal.FindAsync(id);
+            if (personal == null)
             {
                 return NotFound();
             }
-            return View(cliente);
+            return View(personal);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: Personals/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Telofono,Correo,Cedula,Celular")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Telofono,Correo,Cedula,Celular,PuestoDeTrabajo")] Personal personal)
         {
-            if (id != cliente.ID)
+            if (id != personal.ID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace SIM_Lubricentro.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
+                    _context.Update(personal);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.ID))
+                    if (!PersonalExists(personal.ID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace SIM_Lubricentro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            return View(personal);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Personals/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var personal = await _context.Personal
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (cliente == null)
+            if (personal == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(personal);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Personals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
-            _context.Cliente.Remove(cliente);
+            var personal = await _context.Personal.FindAsync(id);
+            _context.Personal.Remove(personal);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool PersonalExists(int id)
         {
-            return _context.Cliente.Any(e => e.ID == id);
+            return _context.Personal.Any(e => e.ID == id);
         }
     }
 }

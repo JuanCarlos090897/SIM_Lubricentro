@@ -11,7 +11,7 @@ namespace SIM_Lubricentro.Models
     {
         public int ID { get; set; }
         public string Titulo { get; set; }
-        public string Reparaciones { get; set; }// aqui se le da la descripcion de la Reparacion ej: Cmabio dce llantas
+        public string DescripcionReparacion { get; set; }// aqui se le da la descripcion de la Reparacion ej: Cmabio dce llantas
 
         
     }

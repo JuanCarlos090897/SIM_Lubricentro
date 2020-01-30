@@ -10,23 +10,23 @@ using SIM_Lubricentro.Models;
 
 namespace SIM_Lubricentro.Controllers
 {
-    public class CarrosController : Controller
+    public class RealizarReparacionesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CarrosController(ApplicationDbContext context)
+        public RealizarReparacionesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Carros
+        // GET: RealizarReparaciones
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Carro.Include(c => c.Cliente);
+            var applicationDbContext = _context.RealizarReparacion.Include(r => r.Carro).Include(r => r.Personal);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Carros/Details/5
+        // GET: RealizarReparaciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,45 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var carro = await _context.Carro
-                .Include(c => c.Cliente)
+            var realizarReparacion = await _context.RealizarReparacion
+                .Include(r => r.Carro)
+                .Include(r => r.Personal)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (carro == null)
+            if (realizarReparacion == null)
             {
                 return NotFound();
             }
 
-            return View(carro);
+            return View(realizarReparacion);
         }
 
-        // GET: Carros/Create
+        // GET: RealizarReparaciones/Create
         public IActionResult Create()
         {
-            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID");
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID");
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID");
             return View();
         }
 
-        // POST: Carros/Create
+        // POST: RealizarReparaciones/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Placa,Vehiculo,Estilo,Año,Kms,Cliente_ID")] Carro carro)
+        public async Task<IActionResult> Create([Bind("ID,Realizado,Carro_ID,Personal_ID")] RealizarReparacion realizarReparacion)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(carro);
+                _context.Add(realizarReparacion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID", carro.Cliente_ID);
-            return View(carro);
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", realizarReparacion.Carro_ID);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID", realizarReparacion.Personal_ID);
+            return View(realizarReparacion);
         }
 
-        // GET: Carros/Edit/5
+        // GET: RealizarReparaciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +80,24 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var carro = await _context.Carro.FindAsync(id);
-            if (carro == null)
+            var realizarReparacion = await _context.RealizarReparacion.FindAsync(id);
+            if (realizarReparacion == null)
             {
                 return NotFound();
             }
-            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID", carro.Cliente_ID);
-            return View(carro);
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", realizarReparacion.Carro_ID);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID", realizarReparacion.Personal_ID);
+            return View(realizarReparacion);
         }
 
-        // POST: Carros/Edit/5
+        // POST: RealizarReparaciones/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Placa,Vehiculo,Estilo,Año,Kms,Cliente_ID")] Carro carro)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Realizado,Carro_ID,Personal_ID")] RealizarReparacion realizarReparacion)
         {
-            if (id != carro.ID)
+            if (id != realizarReparacion.ID)
             {
                 return NotFound();
             }
@@ -102,12 +106,12 @@ namespace SIM_Lubricentro.Controllers
             {
                 try
                 {
-                    _context.Update(carro);
+                    _context.Update(realizarReparacion);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarroExists(carro.ID))
+                    if (!RealizarReparacionExists(realizarReparacion.ID))
                     {
                         return NotFound();
                     }
@@ -118,11 +122,12 @@ namespace SIM_Lubricentro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Cliente_ID"] = new SelectList(_context.Cliente, "ID", "ID", carro.Cliente_ID);
-            return View(carro);
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", realizarReparacion.Carro_ID);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID", realizarReparacion.Personal_ID);
+            return View(realizarReparacion);
         }
 
-        // GET: Carros/Delete/5
+        // GET: RealizarReparaciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +135,32 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var carro = await _context.Carro
-                .Include(c => c.Cliente)
+            var realizarReparacion = await _context.RealizarReparacion
+                .Include(r => r.Carro)
+                .Include(r => r.Personal)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (carro == null)
+            if (realizarReparacion == null)
             {
                 return NotFound();
             }
 
-            return View(carro);
+            return View(realizarReparacion);
         }
 
-        // POST: Carros/Delete/5
+        // POST: RealizarReparaciones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var carro = await _context.Carro.FindAsync(id);
-            _context.Carro.Remove(carro);
+            var realizarReparacion = await _context.RealizarReparacion.FindAsync(id);
+            _context.RealizarReparacion.Remove(realizarReparacion);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CarroExists(int id)
+        private bool RealizarReparacionExists(int id)
         {
-            return _context.Carro.Any(e => e.ID == id);
+            return _context.RealizarReparacion.Any(e => e.ID == id);
         }
     }
 }

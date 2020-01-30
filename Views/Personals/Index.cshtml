@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SIM_Lubricentro.Models.Cliente>
+﻿@model IEnumerable<SIM_Lubricentro.Models.Personal>
 
 @{
     ViewData["Title"] = "Index";
@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Celular)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PuestoDeTrabajo)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,6 +50,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Celular)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PuestoDeTrabajo)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

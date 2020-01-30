@@ -12,6 +12,8 @@ namespace SIM_Lubricentro.Models
         public string Telofono { get; set; }
         public string Correo { get; set; }
         public string Cedula { get; set; }
+        public string Celular { get; set; }
+
 
         public virtual IEnumerable<Carro> Carros { get; set; } // esto es para mandar la llave foranea a Carro
     }

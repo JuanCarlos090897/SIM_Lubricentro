@@ -10,22 +10,23 @@ using SIM_Lubricentro.Models;
 
 namespace SIM_Lubricentro.Controllers
 {
-    public class ClientesController : Controller
+    public class PiezaAgregadasController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ClientesController(ApplicationDbContext context)
+        public PiezaAgregadasController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Clientes
+        // GET: PiezaAgregadas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cliente.ToListAsync());
+            var applicationDbContext = _context.PiezaAgregada.Include(p => p.Carro);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Clientes/Details/5
+        // GET: PiezaAgregadas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var piezaAgregada = await _context.PiezaAgregada
+                .Include(p => p.Carro)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (cliente == null)
+            if (piezaAgregada == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(piezaAgregada);
         }
 
-        // GET: Clientes/Create
+        // GET: PiezaAgregadas/Create
         public IActionResult Create()
         {
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID");
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: PiezaAgregadas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nombre,Telofono,Correo,Cedula,Celular")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("ID,CodigoProducto,Descripcion,FechaPiezaAgregada,Carro_ID")] PiezaAgregada piezaAgregada)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
+                _context.Add(piezaAgregada);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", piezaAgregada.Carro_ID);
+            return View(piezaAgregada);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: PiezaAgregadas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente.FindAsync(id);
-            if (cliente == null)
+            var piezaAgregada = await _context.PiezaAgregada.FindAsync(id);
+            if (piezaAgregada == null)
             {
                 return NotFound();
             }
-            return View(cliente);
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", piezaAgregada.Carro_ID);
+            return View(piezaAgregada);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: PiezaAgregadas/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Telofono,Correo,Cedula,Celular")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,CodigoProducto,Descripcion,FechaPiezaAgregada,Carro_ID")] PiezaAgregada piezaAgregada)
         {
-            if (id != cliente.ID)
+            if (id != piezaAgregada.ID)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace SIM_Lubricentro.Controllers
             {
                 try
                 {
-                    _context.Update(cliente);
+                    _context.Update(piezaAgregada);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.ID))
+                    if (!PiezaAgregadaExists(piezaAgregada.ID))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace SIM_Lubricentro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID", piezaAgregada.Carro_ID);
+            return View(piezaAgregada);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: PiezaAgregadas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +130,31 @@ namespace SIM_Lubricentro.Controllers
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var piezaAgregada = await _context.PiezaAgregada
+                .Include(p => p.Carro)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (cliente == null)
+            if (piezaAgregada == null)
             {
                 return NotFound();
             }
 
-            return View(cliente);
+            return View(piezaAgregada);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: PiezaAgregadas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
-            _context.Cliente.Remove(cliente);
+            var piezaAgregada = await _context.PiezaAgregada.FindAsync(id);
+            _context.PiezaAgregada.Remove(piezaAgregada);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool PiezaAgregadaExists(int id)
         {
-            return _context.Cliente.Any(e => e.ID == id);
+            return _context.PiezaAgregada.Any(e => e.ID == id);
         }
     }
 }
