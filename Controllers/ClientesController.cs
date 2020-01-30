@@ -22,7 +22,14 @@ namespace SIM_Lubricentro.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cliente.ToListAsync());
+            
+
+            // return View(await _context.Cliente.ToListAsync());
+
+
+
+            var applicationDbContext = _context.Cliente.Include(c => c.Carros);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Clientes/Details/5

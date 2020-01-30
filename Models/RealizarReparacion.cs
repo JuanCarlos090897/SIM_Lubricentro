@@ -21,7 +21,7 @@ namespace SIM_Lubricentro.Models
         [ForeignKey("Personal_ID")]
         public virtual Personal Personal { get; set; }
 
-        public virtual List<Reparacion> Reparaciones { get; set; }
-        public virtual List<PiezaAgregada> PiezasAgregadas { get; set; }
+        public virtual IEnumerable<Reparacion> Reparaciones { get; set; }
+        public virtual IEnumerable<PiezaAgregada> PiezasAgregadas { get; set; }
     }
 }

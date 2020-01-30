@@ -22,7 +22,7 @@ namespace SIM_Lubricentro.Controllers
         // GET: Carros
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Carro.Include(c => c.Cliente);
+            var applicationDbContext = _context.Carro.Where(c => c.Cliente.ID == 1).Include(c => c.Cliente);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -57,7 +57,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Placa,Modelo,Color,Cliente_ID")] Carro carro)
+        public async Task<IActionResult> Create([Bind("ID,Placa,Vehiculo,Estilo,Año,Kms,Cliente_ID")] Carro carro)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Placa,Modelo,Color,Cliente_ID")] Carro carro)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Placa,Vehiculo,Estilo,Año,Kms,Cliente_ID")] Carro carro)
         {
             if (id != carro.ID)
             {
