@@ -26,6 +26,30 @@ namespace SIM_Lubricentro.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> ListaCarros() // aqui lo que vamos hacer es ense;ar la lista de los carros para poder seleccionar 
+                                                       // el que quieren poner hacer la mano de obra, como index pero sin opciones de modificacion
+        {
+            var applicationDbContext = _context.Carro.Include(c => c.Cliente);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ListaCarros(List<Carro> carro, int? ID)
+        {
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
         // GET: Carros/Details/5
         public async Task<IActionResult> Details(int? id)
         {

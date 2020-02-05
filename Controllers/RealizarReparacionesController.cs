@@ -26,6 +26,17 @@ namespace SIM_Lubricentro.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // public async Task<IActionResult> Realizar_Reparacion_Carro() //esta es para poner lo que se le debe hacer al carro 
+        
+        public IActionResult Realizar_Reparacion_Carro(int? id) //esta es para poner lo que se le debe hacer al carro
+        {
+            //var aaa = _context.Carro.Where(x => x.ID == id).Select(x => x.Placa);
+            ViewData["Carro_ID"] = _context.Carro.Find(id);
+            // ViewData["Carro_ID"] = new SelectList(_context.Carro, "ID", "ID").Where(x => x == id);
+            ViewData["Personal_ID"] = new SelectList(_context.Personal, "ID", "ID");
+            return View();
+        }
+
         // GET: RealizarReparaciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {

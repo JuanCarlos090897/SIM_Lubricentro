@@ -54,7 +54,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Titulo,DescripcionReparacion")] Reparacion reparacion)
+        public async Task<IActionResult> Create([Bind("ID,Titulo,DescripcionReparacion,Comentario,Realizar")] Reparacion reparacion)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace SIM_Lubricentro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Titulo,DescripcionReparacion")] Reparacion reparacion)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Titulo,DescripcionReparacion,Comentario,Realizar")] Reparacion reparacion)
         {
             if (id != reparacion.ID)
             {
